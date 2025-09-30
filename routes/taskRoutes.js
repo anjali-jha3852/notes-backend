@@ -4,9 +4,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// --------------------
-// Create Task
-// --------------------
+
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { title, description, completed } = req.body;
@@ -19,7 +17,7 @@ router.post("/", authMiddleware, async (req, res) => {
       title,
       description: description || "",
       completed: completed || false,
-      user: req.user._id, // req.user is full user object
+      user: req.user._id,
     });
 
     await task.save();
@@ -30,9 +28,7 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// --------------------
-// Get Tasks
-// --------------------
+
 router.get("/", authMiddleware, async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
@@ -47,9 +43,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// --------------------
-// Update Task
-// --------------------
+
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { title, description, completed } = req.body;
@@ -74,9 +68,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// --------------------
-// Delete Task
-// --------------------
+
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user._id });
